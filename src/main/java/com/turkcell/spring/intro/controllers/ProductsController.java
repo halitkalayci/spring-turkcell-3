@@ -34,3 +34,5 @@ public class ProductsController
     // Headers => YAN BİLGİ
     // Accept-Language =>
 }
+// Hibernate, ORM, JPA => Araştırmak
+// ORM => Table to Java Class

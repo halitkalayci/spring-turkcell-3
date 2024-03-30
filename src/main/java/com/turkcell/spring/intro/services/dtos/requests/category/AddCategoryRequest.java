@@ -1,4 +1,4 @@
-package com.turkcell.spring.intro.services.dtos.requests;
+package com.turkcell.spring.intro.services.dtos.requests.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

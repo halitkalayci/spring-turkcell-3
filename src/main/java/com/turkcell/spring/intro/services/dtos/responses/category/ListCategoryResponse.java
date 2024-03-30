@@ -1,4 +1,4 @@
-package com.turkcell.spring.intro.services.dtos.responses;
+package com.turkcell.spring.intro.services.dtos.responses.category;
 
 import lombok.*;
 

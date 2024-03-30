@@ -21,7 +21,6 @@ public class Product {
     private String name;
     @Column(name="unit_price")
     private double unitPrice;
-    // Foreign Key
     @ManyToOne()
     @JoinColumn(name="category_id")
     private Category category;

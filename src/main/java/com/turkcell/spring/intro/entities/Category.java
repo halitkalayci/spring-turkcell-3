@@ -21,13 +21,11 @@ public class Category
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name="name")
     private String name;
 
     // DEĞİŞKEN İSMİ!
-
-    // TODO: DTO İLE ÇÖZ
-    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 }

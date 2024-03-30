@@ -1,12 +1,16 @@
 package com.turkcell.spring.intro.controllers;
 
 import com.turkcell.spring.intro.entities.Category;
-import com.turkcell.spring.intro.repositories.CategoryRepository;
 import com.turkcell.spring.intro.services.abstracts.CategoryService;
-import com.turkcell.spring.intro.services.dtos.CategoryForAddDto;
+import com.turkcell.spring.intro.services.dtos.requests.AddCategoryRequest;
+import com.turkcell.spring.intro.services.dtos.responses.AddCategoryResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 // Endpoint tanımlamak ✅
@@ -31,12 +35,26 @@ public class CategoriesController
     // SOLID Prensipleri
     // S => Single Responsibility Principle
     @PostMapping
-    public void add(@RequestBody CategoryForAddDto dto)
+    public ResponseEntity<AddCategoryResponse> add(@RequestBody AddCategoryRequest request)
     {
-        // ... validation
-        // ... loglama
-        // ... vb. iş kodları
-        categoryService.add(dto);
+        AddCategoryResponse response = categoryService.add(request);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping("{id}")
+    public Category getDetails(@PathVariable int id)
+    {
+        return categoryService.getById(id);
+    }
+    @PutMapping
+    public void update(@RequestBody Category category)
+    {
+        categoryService.update(category);
     }
     // 5 Temel CRUD Operasyonunu kodlamak => CRUD = CREATE READ UPDATE DELETE
     // Listeleme, idye göre getirme, silme, güncelleme ve ekleme.

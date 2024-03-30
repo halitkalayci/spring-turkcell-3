@@ -1,4 +1,4 @@
-package com.turkcell.spring.intro.services.dtos;
+package com.turkcell.spring.intro.services.dtos.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CategoryForAddDto
+@NoArgsConstructor
+public class AddCategoryRequest // Kategori ekleme isteği nesnesi!
 {
     private String name;
 }

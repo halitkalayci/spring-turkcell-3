@@ -3,12 +3,12 @@ package com.turkcell.spring.intro.services.concretes;
 import com.turkcell.spring.intro.entities.Category;
 import com.turkcell.spring.intro.repositories.CategoryRepository;
 import com.turkcell.spring.intro.services.abstracts.CategoryService;
-import com.turkcell.spring.intro.services.dtos.CategoryForAddDto;
+import com.turkcell.spring.intro.services.dtos.requests.AddCategoryRequest;
+import com.turkcell.spring.intro.services.dtos.responses.AddCategoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 // Tutarlı!
 @Service
@@ -17,14 +17,17 @@ public class CategoryServiceImpl implements CategoryService
 {
     private final CategoryRepository categoryRepository;
     @Override
-    public void add(CategoryForAddDto dto) {
-        if(dto.getName().length() < 3)
+    public AddCategoryResponse add(AddCategoryRequest request) {
+        if(request.getName().length() < 3)
             throw new RuntimeException("Kategori ismi en az 3 hane olmalıdır.");
         // Manual Mapping
         // ModelMapper,MapStruct
         Category category = new Category();
-        category.setName(dto.getName());
-        categoryRepository.save(category);
+        category.setName(request.getName());
+        Category savedCategory = categoryRepository.save(category);
+
+        AddCategoryResponse response = new AddCategoryResponse(savedCategory.getId(), savedCategory.getName());
+        return response;
     }
     // 21:10
     @Override

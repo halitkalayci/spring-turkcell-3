@@ -19,4 +19,3 @@ public class AddCategoryRequest
     @Size(min = 2, max = 50, message = "Kategori ismi en az 2, en fazla 50 karakter olmalıdır.")
     private String name;
 }
-

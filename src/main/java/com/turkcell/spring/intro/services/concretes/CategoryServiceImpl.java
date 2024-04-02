@@ -1,5 +1,6 @@
 package com.turkcell.spring.intro.services.concretes;
 
+import com.turkcell.spring.intro.core.utils.exceptions.types.BusinessException;
 import com.turkcell.spring.intro.entities.Category;
 import com.turkcell.spring.intro.repositories.CategoryRepository;
 import com.turkcell.spring.intro.services.abstracts.CategoryService;
@@ -9,7 +10,9 @@ import com.turkcell.spring.intro.services.mappers.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // Tutarlı!
 @Service
@@ -19,23 +22,24 @@ public class CategoryServiceImpl implements CategoryService
     private final CategoryRepository categoryRepository;
     @Override
     public AddCategoryResponse add(AddCategoryRequest request) {
-        if(request.getName().length() < 3)
-            throw new RuntimeException("Kategori ismi en az 3 hane olmalıdır.");
-        // Manual Mapping
-        // ModelMapper,MapStruct
+        List<String> a = new ArrayList<>();
+        a.add("merhaba");
+
+        a.get(3);
+
+        categoryWithSameNameShouldNotExist(request.getName());
+
         Category category = CategoryMapper.INSTANCE.categoryFromRequest(request);
 
         Category savedCategory = categoryRepository.save(category);
 
-        AddCategoryResponse response = new AddCategoryResponse(savedCategory.getId(), savedCategory.getName());
-        return response;
+        return new AddCategoryResponse(savedCategory.getId(), savedCategory.getName());
     }
     // 21:10
     @Override
     public void update(Category category) {
-
+        categoryWithSameNameShouldNotExist(category.getName());
     }
-
     @Override
     public void delete(int id) {
         Category category = categoryRepository.findById(id).orElse(null);
@@ -53,5 +57,14 @@ public class CategoryServiceImpl implements CategoryService
     @Override
     public Category getById(int id) {
         return categoryRepository.findById(id).orElseThrow();
+    }
+
+    // Global Ex. Handling.
+    private void categoryWithSameNameShouldNotExist(String name){
+        Optional<Category> categoryWithSameName = categoryRepository.findByNameIgnoreCase(name);
+        if(categoryWithSameName.isPresent()){
+            throw new BusinessException("Aynı isimle 2. kategori eklenemez.");
+            // İş kuralı ihlalinde RuntimeException =>
+        }
     }
 }
